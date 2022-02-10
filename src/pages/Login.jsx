@@ -79,8 +79,4 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchSetValue: ({ email }) => dispatch(actionLogin(email)),
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-//   sendForm: (stateComponet) => dispatch(actionPersonalForm(stateComponet)),
-// });
-
 export default connect(null, mapDispatchToProps)(Login);
