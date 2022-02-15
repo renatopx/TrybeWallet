@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actionLogin } from '../actions';
+import Input from '../components/Input';
 
 const PWORD_LENGTH = 6;
 
@@ -15,7 +16,7 @@ class Login extends React.Component {
     };
   }
 
-  validaEmail = (email) => {
+  emailValidation = (email) => {
     // email validation from https://www.horadecodar.com.br/2020/09/13/como-validar-email-com-javascript/
     const regex = /\S+@\S+\.\S+/;
     return regex.test(email);
@@ -26,7 +27,7 @@ class Login extends React.Component {
     this.setState({ [name]: value }, () => {
       const { email, password } = this.state;
       const pwordOk = password.length >= PWORD_LENGTH;
-      const emailOk = this.validaEmail(email);
+      const emailOk = this.emailValidation(email);
       const enableBtn = pwordOk && emailOk;
       this.setState({ disableBtn: !enableBtn });
     });
@@ -43,22 +44,21 @@ class Login extends React.Component {
 
     return (
       <fieldset>
-        <input
+        <Input
           type="email"
-          data-testid="email-input"
+          testId="email-input"
           name="email"
           value={ email }
-          placeholder="Email"
-          onChange={ this.handleChange }
-          required
+          placeHolder="Email"
+          onchange={ this.handleChange }
         />
-        <input
+        <Input
           type="password"
-          data-testid="password-input"
+          testId="password-input"
           name="password"
           value={ password }
-          placeholder="Senha"
-          onChange={ this.handleChange }
+          placeHolder="Senha"
+          onchange={ this.handleChange }
         />
         <button type="submit" disabled={ disableBtn } onClick={ this.handleClick }>
           Entrar
