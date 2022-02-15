@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Form from '../components/Form';
+import Table from '../components/Table';
 
 async function getCurrency() {
   const request = await fetch('https://economia.awesomeapi.com.br/json/all');
@@ -29,53 +31,15 @@ class Wallet extends React.Component {
     const { currency } = this.state;
 
     return (
-      <header data-testid="email-field">
-        <h3>{email}</h3>
-        <span data-testid="total-field">0</span>
-        <span data-testid="header-currency-field"> BRL</span>
-        <form>
-          <fieldset>
-            <label htmlFor="value">
-              Valor da despesa
-              <input
-                type="number"
-                id="value"
-                data-testid="value-input"
-              />
-            </label>
-            <label htmlFor="descricao">
-              Descrição
-              <input
-                type="text"
-                id="descricao"
-                data-testid="description-input"
-              />
-            </label>
-            <label htmlFor="moeda">
-              Moeda
-              <select id="moeda" data-testid="currency-input">
-                {currency.map((curr, i) => (
-                  curr.includes('USDT') ? null
-                    : <option key={ i } data-testid={ curr }>{curr}</option>
-                ))}
-              </select>
-            </label>
-            <select id="moeda" data-testid="method-input">
-              <option value="Dinheiro">Dinheiro</option>
-              <option value="Cartão de Crédito">Cartão de Crédito</option>
-              <option value="Cartão de Débito">Cartão de Débito</option>
-            </select>
-            <select id="descricao" data-testid="tag-input">
-              <option value="Alimentação">Alimentação</option>
-              <option value="Lazer">Lazer</option>
-              <option value="Trabalho">Trabalho</option>
-              <option value="Transporte">Transporte</option>
-              <option value="Saúde">Saúde</option>
-            </select>
-            <button type="submit">Adicionar despesa</button>
-          </fieldset>
-        </form>
-      </header>
+      <>
+        <header data-testid="email-field">
+          <h3>{email}</h3>
+          <span data-testid="total-field">0</span>
+          <span data-testid="header-currency-field"> BRL</span>
+        </header>
+        <Form currency={ currency } />
+        <Table />
+      </>
     );
   }
 }
