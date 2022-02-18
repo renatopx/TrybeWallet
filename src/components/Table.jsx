@@ -1,7 +1,59 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Table extends Component {
+
+  renderTableRows = () => {
+    const { expenses } = this.props;
+
+    const tableRows = expenses.map((expense) => {
+      const { id, description, tag, method, value, currency, exchangeRates } = expense;
+
+      const currencyName = exchangeRates[currency].name;
+      const exchangeRate = parseFloat(exchangeRates[currency].ask);
+      const convertedValue = (parseFloat(value) * exchangeRate).toFixed(2);
+
+      const cells = [
+        description,
+        tag,
+        method,
+        parseFloat(value).toFixed(2),
+        'Real',
+        exchangeRate.toFixed(2),
+        convertedValue,
+        currencyName,
+      ];
+
+      const row = cells.map((cell, i) => <td key={ i }>{cell}</td>);
+
+      return (
+        <tr key={ id }>
+          {row}
+          <td>
+            <button type="button" name={ id }>
+              Editar
+            </button>
+          </td>
+          <td>
+            <button
+              type="button"
+              name={ id }
+              data-testid="delete-btn"
+              onClick={ this.handleDeleteBtn }
+            >
+              Excluir
+            </button>
+          </td>
+        </tr>
+      );
+    });
+
+    return tableRows;
+  };
+
   render() {
+    const { expenses } = this.props;
     return (
       <table>
         <thead>
@@ -17,9 +69,29 @@ class Table extends Component {
             <th scope="col">Editar/Excluir</th>
           </tr>
         </thead>
+        <tbody>{expenses.length > 0 && this.renderTableRows()}</tbody>
       </table>
     );
   }
 }
+Table.propTypes = {
+  expenses: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.object,
+      ]),
+    ),
+  ),
+};
 
-export default Table;
+Table.defaultProps = {
+  expenses: [],
+};
+
+const mapStateToProps = (state) => ({
+  expenses: state.wallet.expenses,
+});
+
+export default connect(mapStateToProps)(Table);

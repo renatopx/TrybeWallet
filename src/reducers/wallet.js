@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  currencies: [], // exchangeRates entra aqui
+  currencies: [],
   expenses: [],
   loading: false,
   error: '',
@@ -7,9 +7,25 @@ const INITIAL_STATE = {
 
 const walletReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  // case FETCH_LOADING:
-  // case FETCH_ERROR:
-  // case SAVE_EXPENSES
+  case 'REQUEST_EXCHANGE_RATES':
+    return ({
+      ...state,
+      loading: true,
+    });
+  case 'UPDATE_EXPENSES':
+    return ({
+      ...state,
+      expenses: [...state.expenses, action.payload],
+      loading: false,
+      error: '',
+    });
+  case 'SAVE_EXCHANGE_RATES':
+    return ({
+      ...state,
+      currencies: Object.keys(action.payload).filter((currency) => currency !== 'USDT'),
+      loading: false,
+      error: '',
+    });
   default:
     return state;
   }
