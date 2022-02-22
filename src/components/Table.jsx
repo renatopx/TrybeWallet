@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Table extends Component {
+  onDeleteClick = () => {
+
+  }
+
   renderTableRows = () => {
     const { expenses } = this.props;
-
-    const tableRows = expenses.map((expense) => {
+    return expenses.map((expense) => {
       const { id, description, tag, method, value, currency, exchangeRates } = expense;
-
       const currencyName = exchangeRates[currency].name;
       const exchangeRate = parseFloat(exchangeRates[currency].ask);
       const convertedValue = (parseFloat(value) * exchangeRate).toFixed(2);
-
       const cells = [
         description,
         tag,
@@ -23,23 +24,22 @@ class Table extends Component {
         convertedValue,
         currencyName,
       ];
-
       const row = cells.map((cell, i) => <td key={ i }>{cell}</td>);
 
       return (
         <tr key={ id }>
           {row}
           <td>
-            <button type="button" name={ id }>
+            <button type="button" id={ id }>
               Editar
             </button>
           </td>
           <td>
             <button
               type="button"
-              name={ id }
+              id={ id }
               data-testid="delete-btn"
-              onClick={ this.handleDeleteBtn }
+              onClick={ this.onDeleteClick }
             >
               Excluir
             </button>
@@ -47,8 +47,6 @@ class Table extends Component {
         </tr>
       );
     });
-
-    return tableRows;
   };
 
   render() {
